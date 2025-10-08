@@ -78,7 +78,7 @@ export default function Home() {
           {/* Header */}
           <div className="px-8 py-12 border-b border-gray-100">
             <h1 className="text-3xl font-semibold text-gray-900 text-center">
-              Labour Payment Calculator
+              Karigar Payment Calculator
             </h1>
             <p className="text-gray-600 text-center mt-3">
               Calculate wages based on hours worked per day
