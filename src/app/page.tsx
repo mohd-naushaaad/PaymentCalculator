@@ -97,6 +97,8 @@ export default function Home() {
                 <input
                   id="dailyWage"
                   type="number"
+                  inputMode="decimal"
+                  pattern="[0-9]*\.?[0-9]*"
                   value={dailyWage}
                   onChange={(e) => setDailyWage(e.target.value)}
                   placeholder="Enter daily wage amount"
@@ -119,6 +121,8 @@ export default function Home() {
                     <input
                       id={`hours-${hours}`}
                       type="number"
+                      inputMode="decimal"
+                      pattern="[0-9]*\.?[0-9]*"
                       value={daysWorked[hours] || ''}
                       onChange={(e) => handleDaysChange(hours, e.target.value)}
                       placeholder="Days"
