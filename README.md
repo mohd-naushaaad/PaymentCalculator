@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Karigar Payment Calculator
 
-## Getting Started
+A Next.js web application for calculating daily wages and payment breakdowns based on hours worked per day for craftsmen and workers.
 
-First, run the development server:
+## Tech Stack
+- **Framework:** Next.js 15 (App Router, Static Export)
+- **UI & Styling:** React 19, Tailwind CSS
+- **Hosting & Edge Delivery:** Cloudflare Pages
+- **CI/CD:** GitHub Actions + Cloudflare Wrangler
+
+---
+
+## Getting Started Locally
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Start the local development server:
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+3. Test static build & Cloudflare Pages preview locally:
+   ```bash
+   npm run build
+   npm run pages:dev
+   ```
+
+---
+
+## Cloudflare Pages Deployment & CI/CD
+
+### Method 1: Automated GitHub Actions CI/CD (Configured)
+
+A GitHub Actions workflow is set up in [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
+
+Every push to the `main` branch automatically runs linting, creates an optimized static export, and deploys directly to Cloudflare Pages. Pull requests will generate preview builds.
+
+#### Required GitHub Secrets:
+Add the following secrets to your GitHub repository (**Settings** > **Secrets and variables** > **Actions** > **New repository secret**):
+
+| Secret Name | Description | Where to find |
+| :--- | :--- | :--- |
+| `CLOUDFLARE_API_TOKEN` | API Token with Cloudflare Pages edit permissions | Cloudflare Dashboard > **My Profile** > **API Tokens** > **Create Token** (Use *Cloudflare Pages* template or custom with `Account.Cloudflare Pages:Edit`) |
+| `CLOUDFLARE_ACCOUNT_ID` | Your Cloudflare Account ID | Cloudflare Dashboard > Right sidebar on Account Home or in the URL |
+
+---
+
+### Method 2: Cloudflare Dashboard Git Integration (Zero Secret Setup)
+
+Alternatively, you can connect your GitHub repository directly within Cloudflare Pages:
+
+1. Go to the [Cloudflare Dashboard](https://dash.cloudflare.com/) > **Compute (Workers & Pages)** > **Create** > **Pages** > **Connect to Git**.
+2. Select repository `mohd-naushaaad/PaymentCalculator`.
+3. Set build configuration:
+   - **Framework preset:** `Next.js (Static HTML Export)` or `None`
+   - **Build command:** `npm run build`
+   - **Build output directory:** `out`
+4. Click **Save and Deploy**. Cloudflare will automatically build and deploy every commit and pull request.
+
+---
+
+### Method 3: Manual CLI Deployment via Wrangler
+
+You can also deploy directly from your terminal:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# 1. Login to Cloudflare
+npx wrangler login
+
+# 2. Build and Deploy
+npm run build
+npm run pages:deploy
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Available Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Command | Action |
+| :--- | :--- |
+| `npm run dev` | Starts Next.js development server |
+| `npm run build` | Builds static export into `out/` directory |
+| `npm run lint` | Runs ESLint |
+| `npm run pages:dev` | Runs local Cloudflare Pages preview of `out/` |
+| `npm run pages:deploy` | Manually deploys `out/` to Cloudflare Pages |
