@@ -5,8 +5,8 @@ A Next.js web application for calculating daily wages and payment breakdowns bas
 ## Tech Stack
 - **Framework:** Next.js 15 (App Router, Static Export)
 - **UI & Styling:** React 19, Tailwind CSS
-- **Hosting & Edge Delivery:** Cloudflare Pages
-- **CI/CD:** GitHub Actions + Cloudflare Wrangler
+- **Hosting:** GitHub Pages
+- **CI/CD:** GitHub Actions
 
 ---
 
@@ -23,58 +23,30 @@ A Next.js web application for calculating daily wages and payment breakdowns bas
    ```
    Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-3. Test static build & Cloudflare Pages preview locally:
+3. Test production static build:
    ```bash
    npm run build
-   npm run pages:dev
    ```
 
 ---
 
-## Cloudflare Pages Deployment & CI/CD
+## GitHub Pages Deployment & CI/CD
 
-### Method 1: Automated GitHub Actions CI/CD (Configured)
+A fully automated GitHub Actions workflow is configured in [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
 
-A GitHub Actions workflow is set up in [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
+### One-Time Setup in GitHub:
+1. Go to your GitHub repository: [https://github.com/mohd-naushaaad/PaymentCalculator](https://github.com/mohd-naushaaad/PaymentCalculator)
+2. Navigate to **Settings** > **Pages**.
+3. Under **Build and deployment** > **Source**, select **GitHub Actions**.
+4. That's it! No API tokens or secrets required.
 
-Every push to the `main` branch automatically runs linting, creates an optimized static export, and deploys directly to Cloudflare Pages. Pull requests will generate preview builds.
-
-#### Required GitHub Secrets:
-Add the following secrets to your GitHub repository (**Settings** > **Secrets and variables** > **Actions** > **New repository secret**):
-
-| Secret Name | Description | Where to find |
-| :--- | :--- | :--- |
-| `CLOUDFLARE_API_TOKEN` | API Token with Cloudflare Pages edit permissions | Cloudflare Dashboard > **My Profile** > **API Tokens** > **Create Token** (Use *Cloudflare Pages* template or custom with `Account.Cloudflare Pages:Edit`) |
-| `CLOUDFLARE_ACCOUNT_ID` | Your Cloudflare Account ID | Cloudflare Dashboard > Right sidebar on Account Home or in the URL |
-
----
-
-### Method 2: Cloudflare Dashboard Git Integration (Zero Secret Setup)
-
-Alternatively, you can connect your GitHub repository directly within Cloudflare Pages:
-
-1. Go to the [Cloudflare Dashboard](https://dash.cloudflare.com/) > **Compute (Workers & Pages)** > **Create** > **Pages** > **Connect to Git**.
-2. Select repository `mohd-naushaaad/PaymentCalculator`.
-3. Set build configuration:
-   - **Framework preset:** `Next.js (Static HTML Export)` or `None`
-   - **Build command:** `npm run build`
-   - **Build output directory:** `out`
-4. Click **Save and Deploy**. Cloudflare will automatically build and deploy every commit and pull request.
-
----
-
-### Method 3: Manual CLI Deployment via Wrangler
-
-You can also deploy directly from your terminal:
-
-```bash
-# 1. Login to Cloudflare
-npx wrangler login
-
-# 2. Build and Deploy
-npm run build
-npm run pages:deploy
-```
+### How It Works:
+- Every time you push changes to the `main` branch, the workflow:
+  1. Installs dependencies and runs ESLint.
+  2. Builds the Next.js static export with the correct base path (`/PaymentCalculator`).
+  3. Deploys the static site to GitHub Pages.
+- Your app will be live at:
+  **`https://mohd-naushaaad.github.io/PaymentCalculator/`**
 
 ---
 
@@ -82,8 +54,6 @@ npm run pages:deploy
 
 | Command | Action |
 | :--- | :--- |
-| `npm run dev` | Starts Next.js development server |
-| `npm run build` | Builds static export into `out/` directory |
-| `npm run lint` | Runs ESLint |
-| `npm run pages:dev` | Runs local Cloudflare Pages preview of `out/` |
-| `npm run pages:deploy` | Manually deploys `out/` to Cloudflare Pages |
+| `npm run dev` | Starts local Next.js development server |
+| `npm run build` | Builds optimized static export into `out/` |
+| `npm run lint` | Runs ESLint checks |

@@ -6,9 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "pages:dev": "wrangler pages dev out",
-    "pages:deploy": "wrangler pages deploy out --project-name=payment-calculator"
+    "lint": "eslint"
   },
   "dependencies": {
     "next": "15.5.4",
@@ -24,7 +22,6 @@
     "eslint": "^9",
     "eslint-config-next": "15.5.4",
     "tailwindcss": "^4",
-    "typescript": "^5",
-    "wrangler": "^4.123.0"
+    "typescript": "^5"
   }
 }
